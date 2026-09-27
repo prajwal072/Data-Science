@@ -1,0 +1,20 @@
+<h2>
+
+    Expression
+</h2>
+<body>
+
+    {%# for results in result.items() #%}
+    
+        <h3>{{ results[0] }} : {{ results[1] }}</h3>
+
+    {% endfor %}
+
+    {% if result>=50 %}
+    
+        <h3>Congratulations! You have passed the exam.</h3>
+    {% else %}
+        <h3>Sorry! You have failed the exam.</h3>
+    {% endif %}
+        
+</body>
