@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algerian Forest Fire Weather Index</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: Arial, sans-serif;
+            color: #1f2937;
+            background: #f3f6f4;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 32px 16px;
+        }
+
+        main {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 32px;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 8px 28px rgb(31 41 55 / 10%);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #175c3a;
+        }
+
+        .intro {
+            margin-bottom: 24px;
+            color: #596579;
+            line-height: 1.5;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        label {
+            display: grid;
+            gap: 7px;
+            font-weight: 600;
+        }
+
+        input,
+        select,
+        button {
+            min-height: 42px;
+            padding: 9px 11px;
+            border: 1px solid #cbd5d0;
+            border-radius: 6px;
+            font: inherit;
+        }
+
+        input:focus,
+        select:focus {
+            outline: 2px solid #58a477;
+            outline-offset: 1px;
+        }
+
+        button {
+            margin-top: 24px;
+            padding: 10px 18px;
+            border: 0;
+            background: #176b43;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #125536;
+        }
+
+        .result {
+            margin-top: 22px;
+            padding: 14px 16px;
+            border-radius: 6px;
+            background: #e8f4ec;
+            color: #175c3a;
+            font-weight: 700;
+        }
+
+        .error {
+            background: #fff0ef;
+            color: #9d2520;
+        }
+
+        @media (max-width: 560px) {
+            main {
+                padding: 24px 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Algerian Forest Fire Weather Index</h1>
+        <p class="intro">Enter the nine weather and location features to estimate the Fire Weather Index (FWI).</p>
+
+        <form action="{{ url_for('predict_datapoint') }}" method="post">
+            <div class="form-grid">
+                <label for="Temperature">
+                    Temperature (&deg;C)
+                    <input id="Temperature" name="Temperature" type="number" step="any" required>
+                </label>
+                <label for="RH">
+                    Relative Humidity (%)
+                    <input id="RH" name="RH" type="number" step="any" required>
+                </label>
+                <label for="Ws">
+                    Wind Speed (km/h)
+                    <input id="Ws" name="Ws" type="number" step="any" required>
+                </label>
+                <label for="Rain">
+                    Rain (mm)
+                    <input id="Rain" name="Rain" type="number" step="any" required>
+                </label>
+                <label for="FFMC">
+                    Fine Fuel Moisture Code (FFMC)
+                    <input id="FFMC" name="FFMC" type="number" step="any" required>
+                </label>
+                <label for="DMC">
+                    Duff Moisture Code (DMC)
+                    <input id="DMC" name="DMC" type="number" step="any" required>
+                </label>
+                <label for="ISI">
+                    Initial Spread Index (ISI)
+                    <input id="ISI" name="ISI" type="number" step="any" required>
+                </label>
+                <label for="Classes">
+                    Fire class
+                    <select id="Classes" name="Classes" required>
+                        <option value="0">Not fire</option>
+                        <option value="1">Fire</option>
+                    </select>
+                </label>
+                <label for="Region">
+                    Region
+                    <select id="Region" name="Region" required>
+                        <option value="0">Bejaia</option>
+                        <option value="1">Sidi-Bel Abbes</option>
+                    </select>
+                </label>
+            </div>
+            <button type="submit">Predict FWI</button>
+        </form>
+
+        {% if prediction_text %}
+            <p class="result">{{ prediction_text }}</p>
+        {% endif %}
+        {% if error_text %}
+            <p class="result error" role="alert">{{ error_text }}</p>
+        {% endif %}
+    </main>
+</body>
+</html>
